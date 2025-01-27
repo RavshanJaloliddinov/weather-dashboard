@@ -24,7 +24,7 @@ export class UserEntity extends BaseEntity {
 
     @Column({
         name: "password",
-        type: "bigint",
+        type: "bigint", 
         default: Date.now(),
     })
     password!: string
