@@ -19,12 +19,13 @@ export class UserEntity extends BaseEntity {
     @Column({
         name: "username",
         type: "varchar",
+        unique: true,
     })
     username: string
 
     @Column({
         name: "password",
-        type: "varchar",
+        type: "varchar", 
         default: Date.now(),
     })
     password: string
