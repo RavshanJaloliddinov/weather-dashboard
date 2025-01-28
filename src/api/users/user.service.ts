@@ -13,29 +13,34 @@ export class UserService {
   ) { }
 
   // Create user
-  async create(createUserDto: CreateUserDto): Promise<UserEntity> {
+  async createUser(createUserDto: CreateUserDto): Promise<UserEntity> {
     const user = this.userRepository.create(createUserDto);
     return await this.userRepository.save(user);
   }
 
   // Get all users
-  async findAll(): Promise<UserEntity[]> {
+  async findAllUsers(): Promise<UserEntity[]> {
     return await this.userRepository.find();
   }
 
   // Get user by ID
-  async findOne(id: string): Promise<UserEntity> {
+  async findOneUser(id: string): Promise<UserEntity> {
     return await this.userRepository.findOne({ where: { id } });
   }
 
   // Update user
-  async update(id: string, updateUserDto: UpdateUserDto): Promise<UserEntity> {
+  async updateUser(id: string, updateUserDto: UpdateUserDto): Promise<UserEntity> {
     await this.userRepository.update(id, updateUserDto);
     return await this.userRepository.findOne({ where: { id } });
   }
 
   // Delete user
-  async remove(id: string): Promise<void> {
+  async removeUser(id: string): Promise<void> {
     await this.userRepository.delete(id);
+  }
+
+  // Username bo'yicha foydalanuvchini qidirish
+  async findUserByUsername(username: string): Promise<UserEntity> {
+    return await this.userRepository.findOne({ where: { username } });
   }
 }

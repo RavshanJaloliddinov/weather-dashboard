@@ -41,7 +41,7 @@ if (missingVariables.length > 0) {
 
 export const config: ConfigType = {
     PORT: parseInt(process.env.PORT as string, 10),
-    DATABASE_URL: process.env.DB_URL as string,
+    DATABASE_URL: process.env.DATABASE_URL as string,
     REDIS_PORT: parseInt(process.env.REDIS_PORT as string, 10),
     EMAIL_PASSWORD: process.env.EMAIL_PASSWORD as string,
     EMAIL: process.env.EMAIL as string,

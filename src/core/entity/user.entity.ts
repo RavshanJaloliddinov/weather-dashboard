@@ -1,14 +1,14 @@
 import { BaseEntity } from "src/common/database/BaseEntity"
 import { Column, Entity } from "typeorm"
 
-@Entity()
+@Entity("user")
 export class UserEntity extends BaseEntity {
 
     @Column({
         name: "name",
         type: "varchar",
     })
-    name!: string
+    name: string
 
     @Column({
         name: "surname",
@@ -20,12 +20,12 @@ export class UserEntity extends BaseEntity {
         name: "username",
         type: "varchar",
     })
-    username!: string
+    username: string
 
     @Column({
         name: "password",
-        type: "bigint", 
+        type: "varchar",
         default: Date.now(),
     })
-    password!: string
+    password: string
 }

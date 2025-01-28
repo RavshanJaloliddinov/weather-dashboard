@@ -16,7 +16,7 @@ export class UserController {
   @ApiResponse({ status: 201, description: 'User created successfully', type: UserEntity })
   @ApiResponse({ status: 400, description: 'Bad Request' })
   async create(@Body() createUserDto: CreateUserDto): Promise<UserEntity> {
-    return this.userService.create(createUserDto);
+    return this.userService.createUser(createUserDto);
   }
 
   // Get all users
@@ -24,7 +24,7 @@ export class UserController {
   @ApiOperation({ summary: 'Get all users' })
   @ApiResponse({ status: 200, description: 'List of users', type: [UserEntity] })
   async findAll(): Promise<UserEntity[]> {
-    return this.userService.findAll();
+    return this.userService.findAllUsers();
   }
 
   // Get user by ID
@@ -34,7 +34,7 @@ export class UserController {
   @ApiResponse({ status: 200, description: 'User found', type: UserEntity })
   @ApiResponse({ status: 404, description: 'User not found' })
   async findOne(@Param('id') id: string): Promise<UserEntity> {
-    return this.userService.findOne(id);
+    return this.userService.findOneUser(id);
   }
 
   // Update user
@@ -44,7 +44,7 @@ export class UserController {
   @ApiResponse({ status: 200, description: 'User updated', type: UserEntity })
   @ApiResponse({ status: 404, description: 'User not found' })
   async update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto): Promise<UserEntity> {
-    return this.userService.update(id, updateUserDto);
+    return this.userService.updateUser(id, updateUserDto);
   }
 
   // Delete user
@@ -54,6 +54,15 @@ export class UserController {
   @ApiResponse({ status: 200, description: 'User deleted' })
   @ApiResponse({ status: 404, description: 'User not found' })
   async remove(@Param('id') id: string): Promise<void> {
-    return this.userService.remove(id);
+    return this.userService.removeUser(id);
+  }
+  // Find user by username
+  @Get(':username')
+  @ApiOperation({ summary: 'Find a user by username' })
+  @ApiParam({ name: 'username', description: 'User username' })
+  @ApiResponse({ status: 200, description: 'User found' })
+  @ApiResponse({ status: 404, description: 'User not found' })
+  async findUserByUsername(@Param('id') id: string): Promise<UserEntity> {
+    return this.userService.findUserByUsername(id);
   }
 }
