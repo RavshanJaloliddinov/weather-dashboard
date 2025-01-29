@@ -25,8 +25,14 @@ export class UserEntity extends BaseEntity {
 
     @Column({
         name: "password",
-        type: "varchar",  
+        type: "varchar",
         default: Date.now(),
     })
     password: string
+
+    @Column({
+        name: "role",
+        type: "enum",
+        default: 
+    })
 }
