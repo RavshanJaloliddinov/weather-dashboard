@@ -12,7 +12,7 @@ import { config } from '../config';
     }),
     TypeOrmModule.forRoot({
       type: 'postgres',
-      url: config.DATABASE_URL,
+      url: config.DATABASE_URL, 
       autoLoadEntities: true,
       synchronize: true, // Faqat rivojlanishda ishlatiladi
       ssl: true,

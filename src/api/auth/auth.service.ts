@@ -16,11 +16,9 @@ export class AuthService {
     async register(registerDto: RegisterDto): Promise<any> {
         const { username, password, name, surname } = registerDto; 
 
-        // Parolni hash qilish
-        const hashedPassword = await bcrypt.hash(password, 10);
         const user = await this.userService.createUser({
             username,
-            password: hashedPassword,
+            password,
             name,
             surname,
         });
@@ -50,7 +48,7 @@ export class AuthService {
         }
 
         const isPasswordValid = await bcrypt.compare(password, user.password);
-        console.log(isPasswordValid)
+        
         if (!isPasswordValid) {
             throw new Error('Invalid credentials');
         }
