@@ -1,4 +1,5 @@
 import { BaseEntity } from "src/common/database/BaseEntity"
+import { UserRoles } from "src/common/database/Enums"
 import { Column, Entity } from "typeorm"
 
 @Entity("user")
@@ -28,11 +29,13 @@ export class UserEntity extends BaseEntity {
         type: "varchar",
         default: Date.now(),
     })
-    password: string
+    password: string;
 
     @Column({
         name: "role",
         type: "enum",
-        default: 
+        enum: UserRoles,
+        default: UserRoles.user,
     })
+    role: UserRoles;
 }

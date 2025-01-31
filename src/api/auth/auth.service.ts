@@ -40,13 +40,14 @@ export class AuthService {
     // Login qilish
     async login(loginDto: LoginDto): Promise<any> {
         const { username, password } = loginDto;
+       
 
         const user = await this.userService.findUserByUsername(username);
 
         if (!user) {
             throw new Error('Invalid credentials');
         }
-
+        
         const isPasswordValid = await bcrypt.compare(password, user.password);
         
         if (!isPasswordValid) {
@@ -56,12 +57,14 @@ export class AuthService {
         // Login'dan so'ng, access va refresh tokenlarni yaratish
         const accessToken = await this.jwtService.generateAccessToken({
             userId: user.id,
-            username: user.username,
+            username: user.username, 
+            role: user.role,
         });
 
         const refreshToken = await this.jwtService.generateRefreshToken({
             userId: user.id,
             username: user.username,
+            role: user.role,
         });
 
         return { accessToken, refreshToken };

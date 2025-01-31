@@ -1,20 +1,25 @@
 import { Injectable } from '@nestjs/common';
 import { JwtService as NestJwtService } from '@nestjs/jwt';
+import { config } from 'src/config';
 
 @Injectable()
 export class JwtService {
-  constructor(private readonly jwtService: NestJwtService) {}
+  constructor(private readonly jwtService: NestJwtService) { }
 
   // Access token yaratish
   async generateAccessToken(payload: any): Promise<string> {
-    return this.jwtService.signAsync(payload);
+    return this.jwtService.signAsync(payload, {
+      secret: config.ACCESS_TOKEN_SECRET_KEY,
+      expiresIn: config.ACCESS_TOKEN_EXPIRE_TIME,
+    });
   }
+
 
   // Refresh token yaratish
   async generateRefreshToken(payload: any): Promise<string> {
     return this.jwtService.signAsync(payload, {
-      secret: process.env.REFRESH_TOKEN_SECRET_KEY, // .env faylidan olish
-      expiresIn: process.env.REFRESH_TOKEN_EXPIRE_TIME, // refresh token muddati
+      secret: config.REFRESH_TOKEN_SECRET_KEY,
+      expiresIn: config.REFRESH_TOKEN_EXPIRE_TIME,
     });
   }
 
@@ -23,8 +28,8 @@ export class JwtService {
     try {
       return await this.jwtService.verifyAsync(token, {
         secret: isRefreshToken
-          ? process.env.REFRESH_TOKEN_SECRET_KEY
-          : process.env.ACCESS_TOKEN_SECRET_KEY,
+          ? config.REFRESH_TOKEN_SECRET_KEY
+          : config.ACCESS_TOKEN_SECRET_KEY,
       });
     } catch (error) {
       throw new Error('Token is invalid or expired');
