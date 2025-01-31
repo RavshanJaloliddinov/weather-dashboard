@@ -4,8 +4,11 @@ import {
     IsNotEmpty,
     MinLength,
     MaxLength,
-    Matches
+    Matches,
+    IsEnum,
+    IsOptional,
 } from 'class-validator';
+import { UserRoles } from 'src/common/database/Enums';
 
 export class CreateUserDto {
     @ApiProperty({
@@ -52,4 +55,13 @@ export class CreateUserDto {
         message: 'Parolda kamida bitta katta harf, bitta raqam va bitta maxsus belgi (@$!%*?&) bo‘lishi kerak'
     })
     password: string;
+
+    @ApiProperty({
+        description: 'Role of the user',
+        example: 'USER',
+        enum: UserRoles,
+    })
+    @IsOptional()
+    @IsEnum(UserRoles, { message: 'Role faqat USER yoki ADMIN bo‘lishi mumkin' })
+    role: UserRoles;  // UserRoles enumga asoslangan role maydoni
 }

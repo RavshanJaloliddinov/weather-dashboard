@@ -5,6 +5,7 @@ import * as bcrypt from 'bcrypt';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { UserEntity } from '../../core/entity/user.entity';
+import { UserRoles } from 'src/common/database/Enums';
 
 @Injectable()
 export class UserService {
@@ -33,7 +34,9 @@ export class UserService {
 
   // Update user
   async updateUser(id: string, updateUserDto: UpdateUserDto): Promise<UserEntity> {
-    await this.userRepository.update(id, updateUserDto);
+    const hashedPassword = await bcrypt.hash(updateUserDto.password, 10);
+
+    await this.userRepository.update(id, { ...updateUserDto, password: hashedPassword });
     return await this.userRepository.findOne({ where: { id } });
   }
 

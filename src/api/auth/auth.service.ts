@@ -4,6 +4,8 @@ import { RegisterDto } from './dto/register.dto';
 import { JwtService } from './jwt.service';
 import { UserService } from '../users/user.service';
 import { LoginDto } from './dto/login.dto';
+import { BadRequestException, InternalServerErrorException } from '@nestjs/common';
+import { UserRoles } from 'src/common/database/Enums';
 
 @Injectable()
 export class AuthService {
@@ -14,59 +16,62 @@ export class AuthService {
 
     // Registratsiya qilish  
     async register(registerDto: RegisterDto): Promise<any> {
-        const { username, password, name, surname } = registerDto; 
+        try {
 
-        const user = await this.userService.createUser({
-            username,
-            password,
-            name,
-            surname,
-        });
+            const user = await this.userService.createUser({ ...registerDto, role: UserRoles.user });
 
-        // User yaratishdan so'ng, access va refresh tokenlarni yaratish
-        const accessToken = await this.jwtService.generateAccessToken({
-            userId: user.id,
-            username: user.username,
-        });
+            const accessToken = await this.jwtService.generateAccessToken({
+                userId: user.id,
+                username: user.username,
+                role: user.role,
+            });
 
-        const refreshToken = await this.jwtService.generateRefreshToken({
-            userId: user.id,
-            username: user.username,
-        });
+            const refreshToken = await this.jwtService.generateRefreshToken({
+                userId: user.id,
+                username: user.username,
+                role: user.role,
+            });
 
-        return { accessToken, refreshToken };
+            return { accessToken, refreshToken };
+        } catch (error) {
+            throw new InternalServerErrorException('User registration failed');
+        }
     }
 
     // Login qilish
     async login(loginDto: LoginDto): Promise<any> {
         const { username, password } = loginDto;
-       
 
-        const user = await this.userService.findUserByUsername(username);
+        try {
+            const user = await this.userService.findUserByUsername(username);
 
-        if (!user) {
-            throw new Error('Invalid credentials');
+            if (!user) {
+                throw new BadRequestException('Invalid credentials: User not found');
+            }
+
+            const isPasswordValid = await bcrypt.compare(password, user.password);
+
+            if (!isPasswordValid) {
+                throw new BadRequestException('Invalid credentials: Incorrect password');
+            }
+
+            // Login'dan so'ng, access va refresh tokenlarni yaratish
+            const accessToken = await this.jwtService.generateAccessToken({
+                userId: user.id,
+                username: user.username,
+                role: user.role,
+            });
+
+            const refreshToken = await this.jwtService.generateRefreshToken({
+                userId: user.id,
+                username: user.username,
+                role: user.role,
+            });
+
+            return { accessToken, refreshToken };
+        } catch (error) {
+            // Agar login xatosi bo'lsa, foydalanuvchiga aniq xato xabarini ko'rsatish
+            throw new BadRequestException(error.message || 'Login failed');
         }
-        
-        const isPasswordValid = await bcrypt.compare(password, user.password);
-        
-        if (!isPasswordValid) {
-            throw new Error('Invalid credentials');
-        }
-
-        // Login'dan so'ng, access va refresh tokenlarni yaratish
-        const accessToken = await this.jwtService.generateAccessToken({
-            userId: user.id,
-            username: user.username, 
-            role: user.role,
-        });
-
-        const refreshToken = await this.jwtService.generateRefreshToken({
-            userId: user.id,
-            username: user.username,
-            role: user.role,
-        });
-
-        return { accessToken, refreshToken };
     }
 }
