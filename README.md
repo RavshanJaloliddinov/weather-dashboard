@@ -41,6 +41,7 @@ Namuna soʻrov:
 
 bash
 Copy
+
 GET /weather/Uzbekistan 2. Bir nechta mamlakatlar uchun ob-havo maʼlumotlari
 URL: GET /weather?countries=country1,country2
 
@@ -54,6 +55,7 @@ Namuna soʻrov:
 
 bash
 Copy
+
 GET /weather?countries=Tashkent,London,New York 3. Ob-havo ogohlantirishlari
 URL: GET /weather/alerts?q=location
 
@@ -67,7 +69,9 @@ Namuna soʻrov:
 
 bash
 Copy
+
 GET /weather/alerts?q=London 4. Bir nechta joylar uchun ob-havo maʼlumotlari
+
 URL: POST /weather/bulk
 
 Tavsif: Bir nechta joylar uchun ob-havo maʼlumotlarini bir soʻrovda qaytaradi.
@@ -77,12 +81,12 @@ Body:
 json
 Copy
 {
+
 "locations": [
 { "id": 1, "name": "Tashkent" },
 { "id": 2, "name": "London" }
 ]
 } 5. Havo sifatini olish
-URL: GET /weather/air-quality?q=location
 
 Tavsif: Berilgan joy uchun havo sifatini qaytaradi.
 
@@ -94,8 +98,8 @@ Namuna soʻrov:
 
 bash
 Copy
+
 GET /weather/air-quality?q=London 6. Astronomiya maʼlumotlari
-URL: GET /weather/astronomy?q=location&dt=yyyy-MM-dd
 
 Tavsif: Berilgan joy va sana uchun quyosh chiqishi, botishi va oy fazasini qaytaradi.
 
@@ -109,8 +113,8 @@ Namuna soʻrov:
 
 bash
 Copy
+
 GET /weather/astronomy?q=London&dt=2023-10-01 7. Sport tadbirlari uchun ob-havo maʼlumotlari
-URL: GET /weather/sports?q=location
 
 Tavsif: Berilgan joy uchun sport tadbirlari uchun ob-havo maʼlumotlarini qaytaradi.
 
@@ -122,8 +126,8 @@ Namuna soʻrov:
 
 bash
 Copy
+
 GET /weather/sports?q=London 8. Dengiz ob-havosi maʼlumotlari
-URL: GET /weather/marine?q=location
 
 Tavsif: Berilgan joy uchun dengiz ob-havosi maʼlumotlarini qaytaradi.
 
@@ -135,8 +139,8 @@ Namuna soʻrov:
 
 bash
 Copy
+
 GET /weather/marine?q=London 9. Saqlangan ob-havo maʼlumotlari
-URL: GET /weather/saved-data
 
 Tavsif: Saqlangan ob-havo maʼlumotlarini qaytaradi.
 
@@ -157,15 +161,16 @@ Body:
 json
 Copy
 {
+
 "username": "user1",
 "password": "password123",
 "email": "user1@example.com"
 } 2. Barcha foydalanuvchilarni olish
-URL: GET /users
 
 Tavsif: Barcha foydalanuvchilarni roʻyxatini qaytaradi.
 
 3. Foydalanuvchini ID boʻyicha olish
+
    URL: GET /users/:id
 
 Tavsif: Berilgan ID boʻyicha foydalanuvchini qaytaradi.
@@ -201,6 +206,33 @@ Auth Controller
 1. Registratsiya
    URL: POST /auth/register
 
+2. Foydalanuvchini yangilash
+   URL: PUT /users/:id
+
+Tavsif: Berilgan ID boʻyicha foydalanuvchini yangilaydi.
+
+Body:
+
+json
+Copy
+{
+"username": "updatedUser",
+"email": "updated@example.com"
+} 5. Foydalanuvchini oʻchirish
+URL: DELETE /users/:id
+
+Tavsif: Berilgan ID boʻyicha foydalanuvchini oʻchiradi.
+
+6. Foydalanuvchini username boʻyicha qidirish
+   URL: GET /users/:username
+
+Tavsif: Berilgan username boʻyicha foydalanuvchini qaytaradi.
+
+Auth Controller
+
+1. Registratsiya
+   URL: POST /auth/register
+
 Tavsif: Yangi foydalanuvchini roʻyxatdan oʻtkazadi.
 
 Body:
@@ -208,11 +240,11 @@ Body:
 json
 Copy
 {
+
 "username": "user1",
 "password": "password123",
 "email": "user1@example.com"
 } 2. Login
-URL: POST /auth/login
 
 Tavsif: Foydalanuvchini tizimga kirish va tokenlarni qaytaradi.
 
@@ -221,6 +253,7 @@ Body:
 json
 Copy
 {
+
 "username": "user1",
 "password": "password123"
 }
