@@ -17,7 +17,6 @@ export class AuthService {
     // Registratsiya qilish  
     async register(registerDto: RegisterDto): Promise<any> {
         try {
-
             const user = await this.userService.createUser({ ...registerDto, role: UserRoles.user });
 
             const accessToken = await this.jwtService.generateAccessToken({
@@ -72,6 +71,29 @@ export class AuthService {
         } catch (error) {
             // Agar login xatosi bo'lsa, foydalanuvchiga aniq xato xabarini ko'rsatish
             throw new BadRequestException(error.message || 'Login failed');
+        }
+    }
+
+    // Access tokenni yangilash
+    async refreshAccessToken(refreshToken: string): Promise<any> {
+        try {
+            // Refresh tokenni tekshirish
+            const payload = await this.jwtService.verifyRefreshToken(refreshToken);
+            
+            if (!payload) {
+                throw new BadRequestException('Invalid refresh token');
+            }
+
+            // Refresh token yordamida yangi access token yaratish
+            const accessToken = await this.jwtService.generateAccessToken({
+                userId: payload.userId,
+                username: payload.username,
+                role: payload.role,
+            });
+
+            return { accessToken };
+        } catch (error) {
+            throw new BadRequestException('Failed to refresh access token');
         }
     }
 }

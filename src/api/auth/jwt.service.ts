@@ -24,7 +24,18 @@ export class JwtService {
   }
 
   // Tokenni tekshirish
-  async verifyToken(token: string, isRefreshToken: boolean = false): Promise<any> {
+  async verifyAccessToken(token: string, isRefreshToken: boolean = false): Promise<any> {
+    try {
+      return await this.jwtService.verifyAsync(token, {
+        secret: isRefreshToken
+          ? config.REFRESH_TOKEN_SECRET_KEY
+          : config.ACCESS_TOKEN_SECRET_KEY,
+      });
+    } catch (error) {
+      throw new Error('Token is invalid or expired');
+    }
+  }
+  async verifyRefreshToken(token: string, isRefreshToken: boolean = false): Promise<any> {
     try {
       return await this.jwtService.verifyAsync(token, {
         secret: isRefreshToken

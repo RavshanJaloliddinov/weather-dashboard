@@ -4,10 +4,11 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { AuthModule } from './api/auth/auth.module';
 import { UserModule } from './api/users/user.module';
 import { config } from './config';
-import { ValidationMiddleware } from 'src/common/middleware/validation..middleware';
-import { AuthMiddleware } from 'src/common/middleware/auth.middleware';
 import { RolesGuardModule } from './common/guards/roles.module';
 import { MiddlewareModule } from './common/middleware/midlleware.module';
+import { WeatherModule } from './api/weather/weather.module';
+import { ExceptionHandlerFilter } from './common/filters/ExceptionHandler';
+import { APP_FILTER } from '@nestjs/core';
 
 @Module({
   imports: [
@@ -29,9 +30,13 @@ import { MiddlewareModule } from './common/middleware/midlleware.module';
     UserModule,
     AuthModule,
     RolesGuardModule,
-    MiddlewareModule
+    WeatherModule
   ],
-  controllers: [],
-  providers: [],
+  providers: [
+    {
+      useClass: ExceptionHandlerFilter,
+      provide: APP_FILTER
+    }
+  ],
 })
 export class AppModule { }

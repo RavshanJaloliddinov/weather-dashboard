@@ -14,6 +14,7 @@ export type ConfigType = {
     ACCESS_TOKEN_EXPIRE_TIME: string;
     REFRESH_TOKEN_SECRET_KEY: string;
     REFRESH_TOKEN_EXPIRE_TIME: string;
+    WEATHER_API: string;
 }
 
 
@@ -27,6 +28,7 @@ const requiredVariables = [
     'ACCESS_TOKEN_EXPIRE_TIME',
     'REFRESH_TOKEN_SECRET_KEY',
     'REFRESH_TOKEN_EXPIRE_TIME',
+    'WEATHER_API',
 ]
 
 const missingVariables = requiredVariables.filter((variable) => {
@@ -49,4 +51,5 @@ export const config: ConfigType = {
     ACCESS_TOKEN_EXPIRE_TIME: process.env.ACCESS_TOKEN_EXPIRE_TIME as string,
     REFRESH_TOKEN_SECRET_KEY: process.env.REFRESH_TOKEN_SECRET_KEY as string,
     REFRESH_TOKEN_EXPIRE_TIME: process.env.REFRESH_TOKEN_EXPIRE_TIME as string,
+    WEATHER_API: process.env.WEATHER_API as string,
 }
